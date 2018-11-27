@@ -56,10 +56,12 @@ import BudgetTable from '@/components/BudgetTable.vue'
     background-color: #130d25;
     color: #fff;
     font-weight: bold;
-    margin: 1.3rem 
+    margin: 1.3rem;
+    cursor: pointer;
+
 }
 .btn:hover {
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 1.2rem 1.6rem 0 rgba(0,0,0,0.24), 0 1.7rem 5rem 0 rgba(0,0,0,0.19);
 }
 .btn-submit{
   background-color: #008CBA;
