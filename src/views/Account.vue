@@ -1,5 +1,8 @@
 <template>
-  <div class="account">
+  <div class="account" id="main">
+      <div class="">
+          <button id="openNav" class="toggle" @click="open()">&#9776;</button>
+      </div>
     <div class="header">
       <span class="heading">
         {{title}}
@@ -28,7 +31,7 @@
       </div>
     </div>
 
-    <account-table :accounts="accounts"></account-table>
+    <account-table :accounts="accounts" @account-deleted="deleteAccount"></account-table>
   </div>
 </template>
 
@@ -73,15 +76,28 @@ import AccountTable from '@/components/AccountTable.vue'
         balance: this.balance
       };
       this.accounts.push(data);
-      this.addToStorage();
+      this.synchronizeStorage();
     },
-
-    addToStorage() {
+    deleteAccount(index){
+      this.accounts.splice(index, 1);
+      this.synchronizeStorage();
+    },
+    synchronizeStorage() {
       const data = {
           accounts: this.accounts
       };
-     localStorage.setItem('budgit', JSON.stringify(data))
-    },
+      localStorage.setItem('budgit', JSON.stringify(data))
+      },
+    open() {
+        document.getElementById("main").style.marginLeft = "25%";
+        document.getElementById("mySidebar").style.width = "25%";
+        document.getElementById("mySidebar").style.display = "block";
+        document.getElementById("openNav").style.display = 'none';
+        },
+    // openBar(){
+    //         this.$emit('open')
+    //     },
+
   }
  }
 </script>
@@ -100,6 +116,10 @@ import AccountTable from '@/components/AccountTable.vue'
   font-size: 5rem;
   font-weight: bold;
   color: #130d25;
+}
+
+.toggle{
+  display: none;
 }
 
 .btn:link,
@@ -202,7 +222,18 @@ import AccountTable from '@/components/AccountTable.vue'
   color: #000;
 }
 
+@media screen and (max-width: 500px) {
+  .account {
+    margin-left: 0rem;
+  }
 
+  .header{
+    text-align: center;
+  }
+  .toggle{
+    display: inline;
+  }
+}
 
 </style>
 

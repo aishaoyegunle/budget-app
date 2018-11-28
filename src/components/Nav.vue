@@ -1,13 +1,43 @@
 <template>
-    <nav class="sidebar">
-        <img src="" alt="logo" class="logo">
-        <ul class="menu">
-            <li><router-link class="menulist" to="/">Account</router-link></li><hr>
-            <li><router-link class="menulist" to="/budget">Budget</router-link></li><hr>
-        </ul>
+    <div>
+        <div class="w3-animate-left sidebar" id="mySidebar"> 
+            <nav >
+                <img src="" alt="logo" class="logo">
+                <button class="close" @click="close" >Close &times;</button>
+                <ul class="menu">
+                    <li><router-link class="menulist" to="/">Account</router-link></li><hr>
+                    <li><router-link class="menulist" to="/budget">Budget</router-link></li><hr>
+                </ul>
+            </nav>
+    </div>
 
-    </nav>
+    </div>
+
 </template>
+
+
+<script>
+
+export default {
+  name: 'Nav',
+  components: {
+      
+  },
+  data (){
+   return{
+   }
+  },
+
+  methods:{
+    close() {
+        document.getElementById("main").style.marginLeft = "0rem";
+        document.getElementById("mySidebar").style.display = "none";
+        document.getElementById("openNav").style.display = "inline-block";
+        },
+    }
+}
+</script>
+
 
 <style scoped>
 
@@ -25,7 +55,9 @@
   height: 100%;
   overflow: auto;
 }
-
+.close{
+    display: none;
+}
 .menu{
     list-style: none;
     margin-left: 5rem;
@@ -52,19 +84,12 @@
     text-decoration: overline;
 } */
 
-/* @media screen and (max-width: 700px) {
+@media screen and (max-width: 500px) {
   .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
+    display: none;
   }
-  .sidebar a {float: left;}
-} */
-
-@media screen and (max-width: 400px) {
-  .sidebar a {
-    text-align: center;
-    float: none;
-  }
+  .close{
+    display: block;
+}
 }
 </style>

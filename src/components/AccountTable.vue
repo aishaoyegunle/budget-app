@@ -6,40 +6,24 @@
         <th>Balance</th>
         <th></th>
     </tr>
-
-    <tr v-for="(account, index) in accounts" :key="account.id">
+    <tr v-for="(account, index) in accounts" :key="index" :index="index">
         <td>{{account.name}} {{index}}</td>
         <td> {{account.balance}} </td>
         <td>
-            <!-- <a href="#edit" class="btn-edit">Edit</a>
-            <div id="edit" class="modal-window">
-            <div>
-                <a href="#" title="Close" class="modal-close">&times;</a>
-                <h1 class="heading2">Update Account</h1>
-                <div>
-                    <input type="text" name="name" v-model="name" class="input1" placeholder="Enter account name"><br>
-                    <select name="category" class="select input1" >
-                        <option value="CREDIT_CARD">Credit Card</option>
-                        <option value="CHECKING">Checking</option>
-                        <option value="SAVINGS">Savings</option>
-                    </select>
-                    <br>
-                    <input type="number" v-model="balance" name="balance" class="input1" placeholder="Enter account balance"><br>
-                    <a href="#" class="btn-submit" @click="updateAccount">Update</a>
+            <button  class="btn-delete" @click.prevent="showModalDelete = !showModalDelete">Delete {{index}}</button>
+            <div class="customModal" v-if="showModalDelete">
+                <div class="customModalTitle">
+                    <button class="close" @click.prevent="showModalDelete = !showModalDelete">&times;</button>
+                </div>
+                <div class="customModalBody">
+                    <p>Are you sure you want to delete account{{index}}</p>
+                </div>
+                <div class="customModalFooter">
+                    <button class="btn-ok" @click="removeAccount(index)" @click.prevent="showModalDelete = !showModalDelete">OK</button>
                 </div>
             </div>
-            </div> -->
-
-            <!-- <a href="#delete" class="btn-delete" >Delete</a> -->
-            <a @click="removeAccount(index)" class="btn-delete">Delete</a>
-            <!-- <div id="delete" class="modal-window">
-                <p>Are you sure you want to delete {{index}}</p>
-                <a href="#" class="btn-close">Close</a>
-                <a href="#" class="btn-ok" @click="removeAccount(index)">Ok</a>
-            </div> -->
         </td>
     </tr>
-    
     </table>
     
 </div>
@@ -51,12 +35,13 @@ export default {
     props: ['accounts'],
     data (){
     return{
-        title:'AccountTable'
+        title:'AccountTable',
+        showModalDelete: false,
     }
     },
     methods: {
         removeAccount(index){
-            this.accounts.splice(index,1);
+            this.$emit('account-deleted', index )
         },
     }
 }
@@ -126,55 +111,6 @@ tr:nth-child(even) {
   margin: 0rem 1rem;
 }
 
-.modal-window {
-  position: fixed;
-  background-color: rgba(255, 255, 255, 0.25);
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 999;
-  opacity: 0;
-  pointer-events: none;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
-  text-align: center;
-}
-.modal-window:target {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.modal-window>div {
-  width: 50rem;
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 2rem;
-  background: #ffffff;
-  color: #333333;
-}
-
-
-.modal-close {
-  color: #aaa;
-  line-height: 5rem;
-  font-size: 1.2rem;
-  position: absolute;
-  right: 0;
-  text-align: center;
-  top: 0;
-  width: 9rem;
-  text-decoration: none;
-  padding: 2rem;
-}
-.modal-close:hover {
-  color: #000;
-}
-
-
 
 .input1{
   font-size: 1.2rem;
@@ -207,4 +143,38 @@ tr:nth-child(even) {
   margin-left: 2rem;
   margin-top: -2rem;
 }
+
+.customModal {
+  box-shadow: 0rem .1rem 1.2rem rgba(0,0,0,0.4);
+  left: calc(50vw - 30rem);
+  position: absolute;
+  z-index: 999;
+  width: 60rem;
+  top: 20vh;
+  border-radius: .5rem;
+  overflow: hidden;
+  }
+
+.customModal .customModalTitle {
+    background-color: #eee;
+    text-align: left;
+    padding: .8rem 1.2rem;
+    font-size: 1.5em;
+}
+
+.customModal .customModalBody {
+    background-color: #fff;
+    padding: .8rem 1.2rem;
+    text-align: left;
+    padding: 1.2rem;
+}
+
+.customModal .customModalFooter {
+    background-color: #eee;
+    padding: .4rem 1.2rem;
+    text-align: left;
+}
+
+
+
 </style>
