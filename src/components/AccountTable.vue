@@ -11,21 +11,22 @@
         <td> {{account.balance}} </td>
         <td>
             <button  class="btn-delete" @click.prevent="showModalDelete = !showModalDelete">Delete {{index}}</button>
-            <div class="customModal" v-if="showModalDelete">
+        </td>
+    </tr>
+    </table>
+    <div class="customModal" v-if="showModalDelete">
                 <div class="customModalTitle">
                     <button class="close" @click.prevent="showModalDelete = !showModalDelete">&times;</button>
                 </div>
                 <div class="customModalBody">
                     <p>Are you sure you want to delete account{{index}}</p>
                 </div>
-                <div class="customModalFooter">
+                <!-- <div class="customModalFooter">
                     <button class="btn-ok" @click="removeAccount(index)" @click.prevent="showModalDelete = !showModalDelete">OK</button>
+
+                </div> -->
                 </div>
-            </div>
-        </td>
-    </tr>
-    </table>
-    
+
 </div>
 </template>
 

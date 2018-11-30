@@ -7,14 +7,17 @@
       <span class="heading">
         {{title}}
       </span>
-      <a href="#open-modal" class="btn">Add Account +</a>
+      <!-- <a href="#open-modal" class="btn">Add Account +</a> -->
+      <button class="btn" @click.prevent="showModalAdd = !showModalAdd">Add Account +</button>
     </div>
     
-    <div id="open-modal" class="modal-window">
-      <div>
-      <a href="#" title="Close" class="modal-close">&times;</a>
+    <div class="customModal" v-if="showModalAdd">
+      <div class="customModalTitle">
+      <a href="#" title="Close" class="modal-close" @click.prevent="showModalAdd = !showModalAdd">&times;</a>
       <h1 class="heading2">Add Account</h1>
-      <div>
+      </div>
+
+      <div class="customModalBody">
           <input type="text" name="name" v-model="name" class="input1" placeholder="Enter account name"><br>
           <select name="category" class="select input1" >
               <option value="CREDIT_CARD">Credit Card</option>
@@ -24,11 +27,11 @@
           <br>
           <input type="number" v-model="balance" name="balance" class="input1" placeholder="Enter account balance"><br>
           <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
-          
-          <a href="#" class="btn-submit" @click="addAccount">Submit</a>
-
-      </div>
-      </div>
+      </div>   
+      <!-- <div class="customModalFooter">
+          <button class="btn-submit" @click="addAccount" @click.prevent="showModalAdd = !showModalAdd">Submit</button>
+      </div> -->
+      
     </div>
 
     <account-table :accounts="accounts" @account-deleted="deleteAccount"></account-table>
@@ -53,6 +56,8 @@ import AccountTable from '@/components/AccountTable.vue'
     category: 'credit card',
     balance: '',
     accounts: [],
+    showModalAdd: false,
+
    }
   },
 
@@ -122,8 +127,7 @@ import AccountTable from '@/components/AccountTable.vue'
   display: none;
 }
 
-.btn:link,
-.btn:visited{
+.btn{
     text-decoration: none;
     padding: 1rem 2rem;
     /* display: inline-block; */
@@ -174,37 +178,38 @@ import AccountTable from '@/components/AccountTable.vue'
   margin-top: -2rem;
 }
 
-.modal-window {
-  position: fixed;
-  background-color: rgba(255, 255, 255, 0.25);
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 999;
-  opacity: 0;
-  pointer-events: none;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
-  text-align: center;
-}
-.modal-window:target {
-  opacity: 1;
-  pointer-events: auto;
-}
 
-.modal-window>div {
-  width: 50rem;
+
+.customModal {
+  box-shadow: 0rem .1rem 1.2rem rgba(0,0,0,0.4);
+  left: calc(50vw - 30rem);
   position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 2rem;
-  background: #ffffff;
-  color: #333333;
+  z-index: 999;
+  width: 60rem;
+  top: 12vh;
+  border-radius: .5rem;
+  overflow: hidden;
+  }
+
+.customModal .customModalTitle {
+    background-color: #eee;
+    text-align: left;
+    padding: .8rem 1.2rem;
+    font-size: 1.5em;
 }
 
+.customModal .customModalBody {
+    background-color: #fff;
+    padding: .8rem 1.2rem;
+    text-align: left;
+    padding: 1.2rem;
+}
+
+.customModal .customModalFooter {
+    background-color: #eee;
+    padding: .4rem 1.2rem;
+    text-align: left;
+}
 
 .modal-close {
   color: #aaa;
@@ -217,7 +222,8 @@ import AccountTable from '@/components/AccountTable.vue'
   width: 9rem;
   text-decoration: none;
   padding: 2rem;
-}
+} 
+
 .modal-close:hover {
   color: #000;
 }
