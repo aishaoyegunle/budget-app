@@ -6,27 +6,51 @@
         <th>Balance</th>
         <th></th>
     </tr>
-    <tr v-for="(account, index) in accounts" :key="index" :index="index">
-        <td>{{account.name}} {{index}}</td>
+    <tr v-for="(account, index) in accounts" :key="index">
+        <td>{{account.name}}</td>
         <td> {{account.balance}} </td>
         <td>
-            <button  class="btn-delete" @click.prevent="showModalDelete = !showModalDelete">Delete {{index}}</button>
+            <button  class="btn-edit"  @click="selUpdate(index)">Edit </button>
+            <button  class="btn-delete" @click="selAcc(index)">Delete </button>
         </td>
     </tr>
-    </table>
     <div class="customModal" v-if="showModalDelete">
-                <div class="customModalTitle">
-                    <button class="close" @click.prevent="showModalDelete = !showModalDelete">&times;</button>
-                </div>
-                <div class="customModalBody">
-                    <p>Are you sure you want to delete account{{index}}</p>
-                </div>
-                <!-- <div class="customModalFooter">
-                    <button class="btn-ok" @click="removeAccount(index)" @click.prevent="showModalDelete = !showModalDelete">OK</button>
+        <div class="customModalTitle">
+            <button class="close" @click.prevent="showModalDelete = !showModalDelete">&times;</button>
+        </div>
+        <div class="customModalBody">
+            <p>Are you sure you want to delete account {{selectedAccount.name}}</p>
+        </div>
+        <div class="customModalFooter">
+            <button class="btn-ok" @click="removeAccount($event)">OK</button>
+        </div>
+    </div>
 
-                </div> -->
-                </div>
+    <div class="customModal" v-if="showModalUpdate">
+      <div class="customModalTitle">
+      <a href="#" title="Close" class="modal-close" @click.prevent="showModalUpdate = !showModalUpdate">&times;</a>
+      <h1 class="heading2">Update Account</h1>
+      </div>
 
+      <div class="customModalBody">
+          <input type="text" name="name" v-model="selectedAccount.name" class="input1" ><br>
+          <select name="category" class="select input1" >
+              <option value="CREDIT_CARD">Credit Card</option>
+              <option value="CHECKING">Checking</option>
+              <option value="SAVINGS">Savings</option>
+          </select>
+          <br>
+          <input type="number" v-model="selectedAccount.balance" name="balance" class="input1"><br>
+
+          <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
+      </div>   
+      <div class="customModalFooter">
+          <button class="btn-submit" @click="updateAccount($event)">Update</button>
+      </div>
+      
+    </div>
+    </table>
+    
 </div>
 </template>
 
@@ -38,13 +62,40 @@ export default {
     return{
         title:'AccountTable',
         showModalDelete: false,
+        selectedIndex: '',
+        showModalUpdate: false,
+        selectedAccount: ''
     }
     },
     methods: {
-        removeAccount(index){
-            this.$emit('account-deleted', index )
+        removeAccount(event){
+            this.$emit('account-deleted', this.selectedIndex );
+            this.showDel(event)
         },
-    }
+        showDel(event){
+            this.showModalDelete = !this.showModalDelete;
+            event.preventDefault()
+        },
+        selAcc(index){
+            this.selectedIndex = index;
+            this.selectedAccount = this.accounts[index];
+            this.showDel(event)
+        },
+        updateAccount(event){
+            this.$emit('account-update', this.selectedIndex );
+            this.showUpdate(event)
+        },
+        selUpdate(index) {
+            this.selectedIndex = index;
+            this.selectedAccount = this.accounts[index];
+            this.showUpdate(event)
+        },
+        showUpdate(event){
+            this.showModalUpdate = !this.showModalUpdate;
+            event.preventDefault()
+        },
+    },
+    
 }
 </script>
 

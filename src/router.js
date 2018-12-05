@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Account from './views/Account.vue'
 import Budget from './views/Budget.vue'
+import BudgetTable from './views/BudgetTable.vue'
 
 
 Vue.use(Router)
@@ -21,12 +22,15 @@ export default new Router({
     {
       path: '/budget',
       name: 'budget',
-      component: Budget
+      component: Budget,
+      // children: [
+      //   { path: 'BudgetTable', component: BudgetTable },
+      // ]
     },
-    // {
-    //   path: '/accountTable',
-    //   name: 'accountTable',
-    //   component: AccountTable
-    // },
+    {
+      path: '/BudgetTable',
+      name: 'BudgetTable',
+      component: BudgetTable
+    },
   ]
 })

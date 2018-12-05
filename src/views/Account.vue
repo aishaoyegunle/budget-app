@@ -7,7 +7,6 @@
       <span class="heading">
         {{title}}
       </span>
-      <!-- <a href="#open-modal" class="btn">Add Account +</a> -->
       <button class="btn" @click.prevent="showModalAdd = !showModalAdd">Add Account +</button>
     </div>
     
@@ -28,13 +27,13 @@
           <input type="number" v-model="balance" name="balance" class="input1" placeholder="Enter account balance"><br>
           <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
       </div>   
-      <!-- <div class="customModalFooter">
-          <button class="btn-submit" @click="addAccount" @click.prevent="showModalAdd = !showModalAdd">Submit</button>
-      </div> -->
+      <div class="customModalFooter">
+          <button class="btn-submit" @click="addAccount">Submit</button>
+      </div>
       
     </div>
 
-    <account-table :accounts="accounts" @account-deleted="deleteAccount"></account-table>
+    <account-table :accounts="accounts" @account-deleted="deleteAccount" @account-update="updateAccount"></account-table>
   </div>
 </template>
 
@@ -62,14 +61,14 @@ import AccountTable from '@/components/AccountTable.vue'
   },
 
   created() {
-    if (localStorage.getItem('budgit')) {
-      const storage = JSON.parse(localStorage.getItem('budgit'))
+    if (localStorage.getItem('account')) {
+      const storage = JSON.parse(localStorage.getItem('account'))
       this.accounts = storage.accounts;
     } else {
       const data = {
           accounts: []
       };
-     localStorage.setItem('budgit', JSON.stringify(data))
+     localStorage.setItem('account', JSON.stringify(data))
     }
   },
 
@@ -82,16 +81,28 @@ import AccountTable from '@/components/AccountTable.vue'
       };
       this.accounts.push(data);
       this.synchronizeStorage();
+      this.showAdd(event);
+      this.name = '';
+      this.balance = '';
     },
     deleteAccount(index){
       this.accounts.splice(index, 1);
+      this.synchronizeStorage();
+    },
+    updateAccount(){
+      const data = {
+        name: this.name,
+        category: this.category,
+        balance: this.balance
+      };
+      this.accounts.push(data);
       this.synchronizeStorage();
     },
     synchronizeStorage() {
       const data = {
           accounts: this.accounts
       };
-      localStorage.setItem('budgit', JSON.stringify(data))
+      localStorage.setItem('account', JSON.stringify(data))
       },
     open() {
         document.getElementById("main").style.marginLeft = "25%";
@@ -102,7 +113,11 @@ import AccountTable from '@/components/AccountTable.vue'
     // openBar(){
     //         this.$emit('open')
     //     },
+    showAdd(event){
+      this.showModalAdd = !this.showModalAdd;
+      event.preventDefault()
 
+  },
   }
  }
 </script>

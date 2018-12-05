@@ -1,21 +1,26 @@
 <template>
+<div>
+    <div class="header">
+      <span class="heading">
+        {{title}}aa
+      </span>
+    </div>
+
     <div class="butable">
         <table>
     <tr>
-        <th>Budget month</th>
+        <th>Category</th>
         <th>Budgeted</th>
-        <th>Spent</th>
-        <th>Income</th>
-        <th>Balance</th>
+        <th>Actitvty</th>
+        <th>Available</th>
         <th></th>
     </tr>
 
     <tr v-for="(budget, i) in budgets" :key="i">
-        <td>{{budget.month}} </td>
+        <td>{{budget.category}} </td>
         <td> {{budget.budgeted}} </td>
-        <td> {{budget.spent}} </td>
-        <td> {{budget.income}} </td>
-        <td> {{budget.balance}} </td>
+        <td> {{budget.activity}} </td>
+        <td> {{budget.available}} </td>
         <td>
             <button @click="Edit" class="btn-edit" >Edit</button> 
         </td>
@@ -23,27 +28,57 @@
     
     
     </table>
+    </div>
 </div>
 </template>
 
 <script>
+
+// import MonthBudget from '@/components/MonthBudget.vue'
+
 export default {
     name:'BudgetTable',
+    components:{
+        // MonthBudget,
+    },
     props: ['budgets'],
     data (){
     return{
-        title:'BudgetTable'
+        title:'',
+        months:[],
+        month:''
     }
+    },
+
+    methods: {
+    selectMonth(){
+      this.title= this.month
     }
+  },
 }
 </script>
 
 <style scoped>
 .butable{
-    /* margin-left: 25rem; */
-    margin: 5rem;
+    margin-left: 25rem;
+    /* margin: 5rem; */
+    padding: 0rem 10rem;
     
 }
+
+.header{
+    margin-left: 25rem;
+    padding: 2rem;
+    margin-bottom: 9rem;
+}
+
+.heading{
+  font-size: 5rem;
+  font-weight: bold;
+  color: #130d25;
+  float: left;
+}
+
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
