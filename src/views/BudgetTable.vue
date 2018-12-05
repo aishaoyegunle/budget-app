@@ -2,7 +2,8 @@
 <div>
     <div class="header">
       <span class="heading">
-        {{title}}aa
+       <!-- {{}} -->
+       October, 2018
       </span>
     </div>
 
@@ -44,17 +45,17 @@ export default {
     props: ['budgets'],
     data (){
     return{
-        title:'',
-        months:[],
-        month:''
+        // title:'',
+        // months:[],
+        // month:''
     }
     },
 
-    methods: {
-    selectMonth(){
-      this.title= this.month
-    }
-  },
+    // methods: {
+    // selectMonth(){
+    //   this.title= this.month
+    // }
+//   },
 }
 </script>
 
