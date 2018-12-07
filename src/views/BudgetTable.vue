@@ -7,8 +7,9 @@
       </span>
     </div>
 
-    <div class="butable">
-        <table>
+    <div class="butable" id="cont">
+        <span class="table-add" @click="addCategory"><i class="fas fa-plus-circle"></i></span>
+        <table id="empTable">
     <tr>
         <th>Category</th>
         <th>Budgeted</th>
@@ -16,17 +17,16 @@
         <th>Available</th>
         <th></th>
     </tr>
-
-    <tr v-for="(budget, i) in budgets" :key="i">
-        <td>{{budget.category}} </td>
-        <td> {{budget.budgeted}} </td>
-        <td> {{budget.activity}} </td>
-        <td> {{budget.available}} </td>
+    
+    <tr v-for="(item, index) in items" :key="index">
+        <td ><input type="text" name="category" v-model="item.category" class="input1" placeholder="Create a category"></td>
+        <td ><input type="text" name="budgeted" v-model="item.budgeted" class="input1" placeholder="add budget to category"></td>
+        <td ><input type="text" name="activity" v-model="item.activity" class="input1" placeholder="Enter amount spent"></td>
+        <td ><input type="text" name="available" v-model="item.available" class="input1" placeholder="Available balance"></td>
         <td>
-            <button @click="Edit" class="btn-edit" >Edit</button> 
+            <span class="add" @click="addRow(index)"><i class="fas fa-check-circle"></i></span>
         </td>
     </tr>
-    
     
     </table>
     </div>
@@ -38,6 +38,7 @@
 // import MonthBudget from '@/components/MonthBudget.vue'
 
 export default {
+
     name:'BudgetTable',
     components:{
         // MonthBudget,
@@ -47,15 +48,57 @@ export default {
     return{
         // title:'',
         // months:[],
-        // month:''
+        // month:'',
+        category: '',
+        budgeted: '',
+        activity: '',
+        available: '',
+        items: [],
     }
     },
 
-    // methods: {
+    created() {
+    if (localStorage.getItem('categories')) {
+      const storage = JSON.parse(localStorage.getItem('categories'))
+      this.items = storage.items;
+    } else {
+      const data = {
+          items: []
+      };
+     localStorage.setItem('categories', JSON.stringify(data))
+    }
+  },
+
+    methods: {
+        addCategory(){
+            this.items.push({
+                category: '',
+                budgeted: '',
+                activity: '',
+                available: ''
+            });
+        },
+        addRow() {
+            // const data = {
+            //     category: this.category,
+            //     budgeted: this.budgeted,
+            //     activity: this.activity,
+            //     available: this.available
+            // };
+            // console.log(data)
+            // this.items.push(data);
+            this.synchronizeStorage();
+        },
+        synchronizeStorage() {
+            const data = {
+                items: this.items
+            };
+            localStorage.setItem('categories', JSON.stringify(data))
+        },
     // selectMonth(){
     //   this.title= this.month
     // }
-//   },
+  },
 }
 </script>
 
@@ -64,21 +107,39 @@ export default {
     margin-left: 25rem;
     /* margin: 5rem; */
     padding: 0rem 10rem;
+    position: relative;
+
     
 }
 
 .header{
     margin-left: 25rem;
     padding: 2rem;
-    margin-bottom: 9rem;
+    margin-bottom: 5rem;
 }
 
 .heading{
   font-size: 5rem;
   font-weight: bold;
   color: #130d25;
-  float: left;
 }
+
+.add {
+    cursor: pointer;
+}
+
+.table-add {
+  color: #070;
+  cursor: pointer;
+  position: absolute;
+  top: .1rem;
+  right: 6rem;
+  font-size: 2.4rem;
+}
+
+.table-add:hover {
+    color: #0b0;
+  }
 
 table {
     font-family: arial, sans-serif;
@@ -87,14 +148,15 @@ table {
 }
 
 td, th {
-    border: .1rem solid #dddddd;
     text-align: left;
     padding: .8rem;
 }
 
 th{
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: bold;
+    background-color: #130d25;
+    color: #fff;
 }
 
 td{
@@ -106,21 +168,8 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
-.btn-edit{
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    padding: .5rem .5rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.2rem;
-    -webkit-transition-duration: 0.4s; 
-    transition-duration: 0.4s;
-    cursor: pointer;
-    border-radius: .5rem;
-    margin: 0rem 1rem;
-}
-
+tr:hover {
+    background-color: #f5f5f5;
+    }
 
 </style>

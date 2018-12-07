@@ -24,7 +24,7 @@
               <option value="SAVINGS">Savings</option>
           </select>
           <br>
-          <input type="number" v-model="balance" name="balance" class="input1" placeholder="Enter account balance"><br>
+          <input type="number" v-model="balance" number data-type="currency" name="balance" class="input1" placeholder="Enter account balance" ><br>
           <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
       </div>   
       <div class="customModalFooter">

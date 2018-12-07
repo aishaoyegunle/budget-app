@@ -74,9 +74,9 @@ import MonthBudget from '@/components/MonthBudget.vue'
       this.month = '';
       this.budgeted = '';
     },
-    moment(date) {
-    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
-  },
+  //   moment(date) {
+  //   return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+  // },
     synchronizeStorage() {
       const data = {
           months: this.months
@@ -109,6 +109,7 @@ import MonthBudget from '@/components/MonthBudget.vue'
   font-size: 5rem;
   font-weight: bold;
   color: #130d25;
+  /* left: 0rem; */
   float: left;
 }
 input[type="month"]::before { 

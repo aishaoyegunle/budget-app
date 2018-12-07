@@ -11,9 +11,11 @@
     "moment": "^2.22.2",
     "sweetalert2": "^7.29.1",
     "vue": "^2.5.17",
+    "vue-currency-filter": "^3.2.0",
     "vue-moment": "^4.0.0",
     "vue-router": "^3.0.1",
-    "vue-sweetalert2": "^1.5.9"
+    "vue-sweetalert2": "^1.5.9",
+    "vue2-filters": "^0.4.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.1.1",

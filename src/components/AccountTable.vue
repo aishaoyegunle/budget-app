@@ -2,7 +2,7 @@
     <div class="actable">
         <table>
     <tr>
-        <th>Account</th>
+        <th>Account Name</th>
         <th>Balance</th>
         <th></th>
     </tr>
@@ -112,14 +112,15 @@ table {
 }
 
 td, th {
-    border: .1rem solid #dddddd;
     text-align: left;
     padding: .8rem;
 }
 
 th{
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: bold;
+    background-color: #130d25;
+    color: #fff;
 }
 
 td{
@@ -130,6 +131,10 @@ td{
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+tr:hover {
+    background-color: #f5f5f5;
+    }
 
 .btn-edit{
     background-color: #008CBA;
