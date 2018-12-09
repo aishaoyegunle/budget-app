@@ -1,54 +1,54 @@
 <template>
     <div class="actable">
         <table>
-    <tr>
-        <th>Account Name</th>
-        <th>Balance</th>
-        <th></th>
-    </tr>
-    <tr v-for="(account, index) in accounts" :key="index">
-        <td>{{account.name}}</td>
-        <td> {{account.balance}} </td>
-        <td>
-            <button  class="btn-edit"  @click="selUpdate(index)">Edit </button>
-            <button  class="btn-delete" @click="selAcc(index)">Delete </button>
-        </td>
-    </tr>
-    <div class="customModal" v-if="showModalDelete">
+        <tr>
+            <th>Account Name</th>
+            <th>Balance</th>
+            <th></th>
+        </tr>
+        <tr v-for="(account, index) in accounts" :key="index">
+            <td>{{account.name}}</td>
+            <td> {{account.balance | currency}} </td>
+            <td>
+                <button  class="btn-edit"  @click="selUpdate(index)">Edit </button>
+                <button  class="btn-delete" @click="selAcc(index)">Delete </button>
+            </td>
+        </tr>
+        <div class="customModal" v-if="showModalDelete">
+            <div class="customModalTitle">
+                <button class="close" @click.prevent="showModalDelete = !showModalDelete">&times;</button>
+            </div>
+            <div class="customModalBody">
+                <p>Are you sure you want to delete account {{selectedAccount.name}}</p>
+            </div>
+            <div class="customModalFooter">
+                <button class="btn-ok" @click="removeAccount($event)">OK</button>
+            </div>
+        </div>
+
+        <div class="customModal" v-if="showModalUpdate">
         <div class="customModalTitle">
-            <button class="close" @click.prevent="showModalDelete = !showModalDelete">&times;</button>
+        <a href="#" title="Close" class="modal-close" @click.prevent="showModalUpdate = !showModalUpdate">&times;</a>
+        <h1 class="heading2">Update Account</h1>
         </div>
+
         <div class="customModalBody">
-            <p>Are you sure you want to delete account {{selectedAccount.name}}</p>
-        </div>
+            <input type="text" name="name" v-model="selectedAccount.name" class="input1" ><br>
+            <select name="category" class="select input1" >
+                <option value="CREDIT_CARD">Credit Card</option>
+                <option value="CHECKING">Checking</option>
+                <option value="SAVINGS">Savings</option>
+            </select>
+            <br>
+            <input type="number" v-model="selectedAccount.balance" name="balance" class="input1"><br>
+
+            <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
+        </div>   
         <div class="customModalFooter">
-            <button class="btn-ok" @click="removeAccount($event)">OK</button>
+            <button class="btn-submit" @click="updateAccount($event)">Update</button>
         </div>
-    </div>
-
-    <div class="customModal" v-if="showModalUpdate">
-      <div class="customModalTitle">
-      <a href="#" title="Close" class="modal-close" @click.prevent="showModalUpdate = !showModalUpdate">&times;</a>
-      <h1 class="heading2">Update Account</h1>
-      </div>
-
-      <div class="customModalBody">
-          <input type="text" name="name" v-model="selectedAccount.name" class="input1" ><br>
-          <select name="category" class="select input1" >
-              <option value="CREDIT_CARD">Credit Card</option>
-              <option value="CHECKING">Checking</option>
-              <option value="SAVINGS">Savings</option>
-          </select>
-          <br>
-          <input type="number" v-model="selectedAccount.balance" name="balance" class="input1"><br>
-
-          <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
-      </div>   
-      <div class="customModalFooter">
-          <button class="btn-submit" @click="updateAccount($event)">Update</button>
-      </div>
-      
-    </div>
+        
+        </div>
     </table>
     
 </div>
@@ -67,6 +67,13 @@ export default {
         selectedAccount: ''
     }
     },
+
+    filters: {
+        currency(value) {
+            return "$ " + parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+        }
+    },
+
     methods: {
         removeAccount(event){
             this.$emit('account-deleted', this.selectedIndex );
@@ -231,7 +238,5 @@ tr:hover {
     padding: .4rem 1.2rem;
     text-align: left;
 }
-
-
 
 </style>

@@ -1,7 +1,8 @@
 <template>
     <div>
-        <div class="w3-animate-left sidebar" id="mySidebar"> 
-            <nav >
+            <button id="openNav" class="toggle" @click="open()">&#9776;</button>
+        <div class="sidebar" id="mySidebar"> 
+            <nav>
                 <img src="" alt="logo" class="logo">
                 <button class="close" @click="close" >Close &times;</button>
                 <ul class="menu">
@@ -29,6 +30,12 @@ export default {
   },
 
   methods:{
+    open() {
+        document.getElementById("main").style.marginLeft = "25%";
+        document.getElementById("mySidebar").style.width = "25%";
+        document.getElementById("mySidebar").style.display = "block";
+        document.getElementById("openNav").style.display = 'none';
+        },
     close() {
         document.getElementById("main").style.marginLeft = "0rem";
         document.getElementById("mySidebar").style.display = "none";
@@ -72,6 +79,9 @@ export default {
 
 }
 
+.toggle{
+  display: none;
+}
 /* .menulist:hover{
     
 } */
@@ -91,5 +101,19 @@ export default {
   .close{
     display: block;
 }
+.toggle{
+    display: inline;
+  }
 }
+
+/* @media only screen and (min-width: 600px) {    .sidebar {
+        display: block;
+    }
+     .close{
+    display: none;
+}
+.toggle{
+    display: none;
+  }
+} */
 </style>

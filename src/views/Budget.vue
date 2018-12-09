@@ -1,5 +1,5 @@
 <template>
-  <div class="budget">
+  <div class="budget" id="main">
     <div class="header">
       <span class="heading">
         {{title}}
@@ -22,21 +22,18 @@
     </div>
 
 
-    <month-budget v-for ="(month, i) in months" :key="i" :month="month"></month-budget>
-    <!-- <budget-table :budgets="budgets"></budget-table> -->
+    <month-budget v-for ="(month, i) in months" :key="i" :month="month" :index=i></month-budget>
   </div>
 </template>
 
 
 <script>
 
-// import BudgetTable from '@/components/BudgetTable.vue'
 import MonthBudget from '@/components/MonthBudget.vue'
 
  export default{
   name:'Budget',
   components: {
-    // BudgetTable,
     MonthBudget
   },
   data (){
@@ -190,6 +187,17 @@ input[type="month"]:valid::before { display: none }
 
 .modal-close:hover {
   color: #000;
+}
+
+@media screen and (max-width: 500px) {
+  .budget{
+    margin-left: 0rem;
+  }
+
+  .header{
+    text-align: center;
+  }
+
 }
 </style>
 

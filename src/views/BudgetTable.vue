@@ -1,127 +1,198 @@
 <template>
-<div>
+<div class="budget-table" id="main">
     <div class="header">
       <span class="heading">
-       <!-- {{}} -->
-       October, 2018
+          {{formatedDate}}
       </span>
+
+      <span class="heading cost">
+       {{totalCost}}
+      </span>
+
     </div>
 
     <div class="butable" id="cont">
         <span class="table-add" @click="addCategory"><i class="fas fa-plus-circle"></i></span>
         <table id="empTable">
-    <tr>
-        <th>Category</th>
-        <th>Budgeted</th>
-        <th>Actitvty</th>
-        <th>Available</th>
-        <th></th>
-    </tr>
+            <tr>
+                <th>Category</th>
+                <th>Budgeted</th>
+                <th>Actitvty</th>
+                <th>Available</th>
+                <th></th>
+            </tr>
     
-    <tr v-for="(item, index) in items" :key="index">
-        <td ><input type="text" name="category" v-model="item.category" class="input1" placeholder="Create a category"></td>
-        <td ><input type="text" name="budgeted" v-model="item.budgeted" class="input1" placeholder="add budget to category"></td>
-        <td ><input type="text" name="activity" v-model="item.activity" class="input1" placeholder="Enter amount spent"></td>
-        <td ><input type="text" name="available" v-model="item.available" class="input1" placeholder="Available balance"></td>
-        <td>
-            <span class="add" @click="addRow(index)"><i class="fas fa-check-circle"></i></span>
-        </td>
-    </tr>
-    
-    </table>
+            <tr v-for="(item, index) in currentMonth.items" :key="index">
+                <td ><input type="text" name="category" v-model="item.category" class="input1" placeholder="Create a category"></td>
+                <td ><currency-input type="text" name="budgeted" v-model="item.budgeted" class="input1" placeholder="add budget to category"></currency-input></td>
+                <td ><currency-input type="text" name="activity" v-model="item.activity" class="input1" placeholder="Enter amount spent"></currency-input></td>
+                <td ><currency-input type="text" name="available" v-model="item.available" class="input1" placeholder="Available balance"></currency-input></td>
+            </tr>
+        </table>
+        <button  class="btn-save" @click="saveItems">Save</button>
     </div>
 </div>
 </template>
 
 <script>
-
-// import MonthBudget from '@/components/MonthBudget.vue'
+import * as moment from 'moment'
+import CurrencyInput from './BudgetTable.vue'
 
 export default {
-
     name:'BudgetTable',
     components:{
-        // MonthBudget,
+        CurrencyInput
     },
-    props: ['budgets'],
+    props: ['budgets','value'],
+    template: `
+        <div>
+            <input 
+            type="text" 
+            :value="format(value)"
+            v-model="displayValue" 
+            @blur="isInputActive = false"
+            @focus="isInputActive = true"
+            ref="input"/>
+        </div>`,
+
     data (){
-    return{
-        // title:'',
-        // months:[],
-        // month:'',
-        category: '',
-        budgeted: '',
-        activity: '',
-        available: '',
-        items: [],
-    }
+        return{
+            category: '',
+            budgeted: '',
+            activity: '',
+            available: '',
+            months: [],
+            currentMonth: '',
+            id: '',
+            amountRemaining: 0,
+            formatedDate: '',
+            isInputActive: false
+
+        }
+    },
+
+    filters: {
+        currency(value) {
+            return "$ " + parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+        }
     },
 
     created() {
-    if (localStorage.getItem('categories')) {
-      const storage = JSON.parse(localStorage.getItem('categories'))
-      this.items = storage.items;
-    } else {
-      const data = {
-          items: []
-      };
-     localStorage.setItem('categories', JSON.stringify(data))
-    }
-  },
+        if (localStorage.getItem('budget')) {
+        const storage = JSON.parse(localStorage.getItem('budget'))
+        this.months = storage.months;
+        if (this.months.length < 1) {
+            this.$router.push('/');
+        } else  {
+            this.id = this.$route.params.id;
+            this.currentMonth = this.months[this.id];
+            this.initializeItems();
+            this.formatDate();
+        }
+        } else {
+        this.$router.push('/');
+        }
+    },
+
+    computed: {
+        // amountRemaining() {
+        //     const cost = 
+        // },
+
+        totalCost() {
+            // let cost =0
+            // if (this.currentMonth.items.length < 1) {
+            //     return cost;
+            // } else {
+            //     cost = this.currentMonth.items.reduce((a, b) => a.budgeted + b.budgeted);
+            //     return cost;
+            // }
+            return 0;
+        },
+
+        displayValue: {
+            get: function() {
+                if (this.isInputActive) {
+                    // Cursor is inside the input field. unformat display value for user
+                    return this.value.toString()
+                } else {
+                    // User is not modifying now. Format display value for user interface
+                    return "$ " + this.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,")
+                }
+            },
+            // set: function(modifiedValue) {
+            //     // Recalculate value after ignoring "$" and "," in user input
+            //     let newValue = parseFloat(modifiedValue.replace(/[^\d\.]/g, ""))
+            //     // Ensure that it is not NaN
+            //     if (isNaN(newValue)) {
+            //         newValue = 0
+            //     }
+            //     // Note: we cannot set this.value as it is a "prop". It needs to be passed to parent component
+            //     // $emit the event so that parent component gets it
+            //     this.$emit('input', newValue)
+            // }
+        }
+    },
 
     methods: {
         addCategory(){
-            this.items.push({
+            this.currentMonth.items.push({
                 category: '',
                 budgeted: '',
                 activity: '',
                 available: ''
             });
         },
-        addRow() {
-            // const data = {
-            //     category: this.category,
-            //     budgeted: this.budgeted,
-            //     activity: this.activity,
-            //     available: this.available
-            // };
-            // console.log(data)
-            // this.items.push(data);
+
+        initializeItems() {
+            if (!this.currentMonth.items) {
+                this.currentMonth.items = [];
+                this.synchronizeStorage();
+            }
+        },
+
+        formatDate() {
+            this.formatedDate = moment(this.currentMonth.month).format("MMMM, YYYY");
+        },
+
+        saveItems() {
             this.synchronizeStorage();
         },
-        synchronizeStorage() {
+
+        synchronizeStorage(){
             const data = {
-                items: this.items
-            };
-            localStorage.setItem('categories', JSON.stringify(data))
-        },
-    // selectMonth(){
-    //   this.title= this.month
-    // }
+                months: this.months
+            }
+            localStorage.setItem('budget', JSON.stringify(data));
+        }
   },
 }
 </script>
 
 <style scoped>
-.butable{
-    margin-left: 25rem;
-    /* margin: 5rem; */
-    padding: 0rem 10rem;
-    position: relative;
 
-    
+
+.budget-table{
+    margin-left: 25rem;
+    /* padding: 0rem 10rem;
+    position: relative; */  
 }
-
+.butable{
+    margin: 5rem;
+}
 .header{
-    margin-left: 25rem;
     padding: 2rem;
-    margin-bottom: 5rem;
+    /* margin-bottom: 5rem; */
 }
 
 .heading{
   font-size: 5rem;
   font-weight: bold;
   color: #130d25;
+}
+
+.cost{
+    float: right;
 }
 
 .add {
@@ -152,14 +223,14 @@ td, th {
     padding: .8rem;
 }
 
-th{
+th {
     font-size: 1.6rem;
     font-weight: bold;
     background-color: #130d25;
     color: #fff;
 }
 
-td{
+td {
     font-size: 1.3rem;
     font-weight: 400;
 }
@@ -171,5 +242,22 @@ tr:nth-child(even) {
 tr:hover {
     background-color: #f5f5f5;
     }
+
+.btn-save{
+    margin-top: 5rem;
+    margin-bottom: 2rem;    
+    cursor: pointer;
+}
+
+@media screen and (max-width: 500px) {
+  .budget-table {
+    margin-left: 0rem;
+  }
+
+  .header{
+    text-align: center;
+  }
+
+}
 
 </style>

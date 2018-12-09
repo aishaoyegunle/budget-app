@@ -1,8 +1,5 @@
 <template>
   <div class="account" id="main">
-      <div class="">
-          <button id="openNav" class="toggle" @click="open()">&#9776;</button>
-      </div>
     <div class="header">
       <span class="heading">
         {{title}}
@@ -50,7 +47,7 @@ import AccountTable from '@/components/AccountTable.vue'
 
   data (){
    return{
-    title:'Accounts',
+    title:'Account',
     name: '',
     category: 'credit card',
     balance: '',
@@ -104,15 +101,6 @@ import AccountTable from '@/components/AccountTable.vue'
       };
       localStorage.setItem('account', JSON.stringify(data))
       },
-    open() {
-        document.getElementById("main").style.marginLeft = "25%";
-        document.getElementById("mySidebar").style.width = "25%";
-        document.getElementById("mySidebar").style.display = "block";
-        document.getElementById("openNav").style.display = 'none';
-        },
-    // openBar(){
-    //         this.$emit('open')
-    //     },
     showAdd(event){
       this.showModalAdd = !this.showModalAdd;
       event.preventDefault()
@@ -136,10 +124,6 @@ import AccountTable from '@/components/AccountTable.vue'
   font-size: 5rem;
   font-weight: bold;
   color: #130d25;
-}
-
-.toggle{
-  display: none;
 }
 
 .btn{
@@ -192,8 +176,6 @@ import AccountTable from '@/components/AccountTable.vue'
   margin-left: 2rem;
   margin-top: -2rem;
 }
-
-
 
 .customModal {
   box-shadow: 0rem .1rem 1.2rem rgba(0,0,0,0.4);
@@ -251,9 +233,7 @@ import AccountTable from '@/components/AccountTable.vue'
   .header{
     text-align: center;
   }
-  .toggle{
-    display: inline;
-  }
+
 }
 
 </style>
