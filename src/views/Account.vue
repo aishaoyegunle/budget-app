@@ -1,6 +1,7 @@
 <template>
   <div class="account" id="main">
     <div class="header">
+      <button id="openNav" class="toggle" @click="open()">&#9776;</button>
       <span class="heading">
         {{title}}
       </span>
@@ -70,6 +71,10 @@ import AccountTable from '@/components/AccountTable.vue'
   },
 
   methods: {
+    open() {
+      document.getElementById("mySidebar").style.display = "block";
+      document.getElementById("openNav").style.display = 'none';
+      },
     addAccount() {
       const data = {
         name: this.name,
@@ -117,13 +122,17 @@ import AccountTable from '@/components/AccountTable.vue'
 
 .header{
   padding: 2rem;
-  /* display: inline-block; */
+  display: block;
 }
 
 .heading{
   font-size: 5rem;
   font-weight: bold;
   color: #130d25;
+}
+
+.toggle{
+  display: none;
 }
 
 .btn{
@@ -146,7 +155,7 @@ import AccountTable from '@/components/AccountTable.vue'
 }
 
 .input1{
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin: 2rem;
   width: 80%;
   padding: 1rem .4rem;
@@ -168,13 +177,11 @@ import AccountTable from '@/components/AccountTable.vue'
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 1rem;
+  font-size: 1.4rem;
   -webkit-transition-duration: 0.4s; 
   transition-duration: 0.4s;
   cursor: pointer;
   border-radius: .5rem;
-  margin-left: 2rem;
-  margin-top: -2rem;
 }
 
 .customModal {
@@ -204,14 +211,14 @@ import AccountTable from '@/components/AccountTable.vue'
 
 .customModal .customModalFooter {
     background-color: #eee;
-    padding: .4rem 1.2rem;
-    text-align: left;
+    padding: 1.3rem 1.2rem;
+    text-align: center;
 }
 
 .modal-close {
   color: #aaa;
   line-height: 5rem;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   position: absolute;
   right: 0;
   text-align: center;
@@ -225,13 +232,40 @@ import AccountTable from '@/components/AccountTable.vue'
   color: #000;
 }
 
-@media screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
   .account {
     margin-left: 0rem;
   }
+  .heading{
+    font-size: 4rem;
+  }
 
-  .header{
-    text-align: center;
+  .toggle{
+    display: inline-block;
+    font-size: 2.2rem;
+    cursor: pointer;
+    border-radius: 1rem;
+    padding: .2rem 1.5rem;
+    background-color: #130d25;
+    border: none;
+    color: #fff;
+    float: left;
+    margin: 1rem 4rem 1rem -2rem;
+    }
+    
+  .btn{
+    text-decoration: none;
+    padding: .8rem 1.5rem;
+    border-radius: 10rem;
+    font-size: 1.2rem;
+    float: right;
+  }
+
+  .customModal {
+    left: calc(40vw - 10rem);
+    position: absolute;
+    width: 30rem;
+    top: 12vh;
   }
 
 }

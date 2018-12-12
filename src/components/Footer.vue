@@ -8,6 +8,7 @@
 
 <style scoped>
 .bg-4 { 
+    text-align: center;
     background-color: #130d25;
     color: #fff;
     position: fixed;

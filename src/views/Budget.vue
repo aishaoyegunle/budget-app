@@ -1,6 +1,7 @@
 <template>
   <div class="budget" id="main">
     <div class="header">
+      <button id="openNav" class="toggle" @click="open()">&#9776;</button>
       <span class="heading">
         {{title}}
       </span>
@@ -10,17 +11,16 @@
     <div class="customModal" v-if="showModalAdd">
       <div class="customModalTitle">
         <a href="#" title="Close" class="modal-close" @click.prevent="showModalAdd = !showModalAdd">&times;</a>
-        <h1 class="heading2">Month</h1>
+        <h1 class="heading2">Monthly Budget</h1>
       </div>
       <div class="customModalBody">
         <input type="month" name="month" v-model="month" class="input1" data-placeholder="" required aria-required="true" ><i class="fas fa-calendar-alt"></i><br>
-        <input type="number" v-model="budgeted" name="budgeted" class="input1" placeholder="Enter budget for the month"><i class="fas fa-dollar-sign"></i>
+        <input type="number" v-model="budget" name="budget" class="input1" placeholder="Enter budget for the month"><i class="fas fa-dollar-sign"></i>
         <br><br>
-        <button class="btn-submit" @click="addMonth">Submit</button>
+        <button class="btn-submit" @click="addMonth">Enter</button>
         
       </div>
     </div>
-
 
     <month-budget v-for ="(month, i) in months" :key="i" :month="month" :index=i></month-budget>
   </div>
@@ -40,7 +40,7 @@ import MonthBudget from '@/components/MonthBudget.vue'
    return{
     title:'Budget',
     month: '',
-    budgeted: '',
+    budget: '',
     months: [],
     showModalAdd: false,
 
@@ -60,20 +60,22 @@ import MonthBudget from '@/components/MonthBudget.vue'
   },
 
   methods: {
+    open() {
+      document.getElementById("mySidebar").style.display = "block";
+      document.getElementById("openNav").style.display = 'none';
+      },
     addMonth() {
       const data = {
         month: this.month,
-        budgeted: this.budgeted
+        budget: this.budget
       };
       this.months.push(data);
       this.synchronizeStorage();
       this.showAdd(event);
       this.month = '';
-      this.budgeted = '';
+      this.budget = '';
     },
-  //   moment(date) {
-  //   return moment(date).format('MMMM Do YYYY, h:mm:ss a');
-  // },
+
     synchronizeStorage() {
       const data = {
           months: this.months
@@ -94,7 +96,6 @@ import MonthBudget from '@/components/MonthBudget.vue'
 .budget{
   margin-left: 25rem;
   text-align: center;
-  /* background-color: rgba(220, 220, 220, 0.541); */
 }
 
 .header{
@@ -109,13 +110,25 @@ import MonthBudget from '@/components/MonthBudget.vue'
   /* left: 0rem; */
   float: left;
 }
+
+.toggle{
+  display: none;
+}
+
 input[type="month"]::before { 
 	content: attr(data-placeholder);
-	width: 100%;
+  width: 100%;
 }
 
 input[type="month"]:focus::before,
 input[type="month"]:valid::before { display: none }
+
+.input1{
+  font-size: 1.5rem;
+  margin: 2rem;
+  width: 80%;
+  padding: 1rem .4rem;
+}
 
 .btn{
     text-decoration: none;
@@ -138,23 +151,25 @@ input[type="month"]:valid::before { display: none }
   background-color: #008CBA;
   color: white;
   border: none;
-  padding: 1rem 3rem;
-  text-align: center;
+  margin-left: 20rem;
+  padding: 1rem 2rem;
   text-decoration: none;
   display: inline-block;
-  font-size: .8rem;
+  font-size: 1.3rem;
   -webkit-transition-duration: 0.4s; 
   transition-duration: 0.4s;
   cursor: pointer;
+  border-radius: .5rem;
+
 }
 
 .customModal {
   box-shadow: 0rem .1rem 1.2rem rgba(0,0,0,0.4);
-  left: calc(50vw - 30rem);
+  left: calc(50vw - 20rem);
   position: absolute;
   z-index: 999;
-  width: 60rem;
-  top: 12vh;
+  width: 50rem;
+  top: 19vh;
   border-radius: .5rem;
   overflow: hidden;
   }
@@ -167,7 +182,6 @@ input[type="month"]:valid::before { display: none }
 }
   .customModal .customModalBody {
     background-color: #fff;
-    padding: .8rem 1.2rem;
     text-align: left;
     padding: 1.2rem;
 }
@@ -175,27 +189,55 @@ input[type="month"]:valid::before { display: none }
 .modal-close {
   color: #aaa;
   line-height: 5rem;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   position: absolute;
   right: 0;
   text-align: center;
   top: 0;
   width: 9rem;
   text-decoration: none;
-  padding: 2rem;
+  padding: 0rem;
 } 
 
 .modal-close:hover {
   color: #000;
 }
 
-@media screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
   .budget{
     margin-left: 0rem;
   }
 
-  .header{
-    text-align: center;
+  .heading{
+    font-size: 4rem;
+  }
+
+  .toggle{
+    display: inline-block;
+    font-size: 2.2rem;
+    cursor: pointer;
+    border-radius: 1rem;
+    padding: .2rem 1.5rem;
+    background-color: #130d25;
+    border: none;
+    color: #fff;
+    float: left;
+    margin: 1rem 4rem 1rem -2rem;
+    }
+
+  .btn{
+    text-decoration: none;
+    padding: .8rem 1.5rem;
+    border-radius: 10rem;
+    font-size: 1.2rem;
+    float: right;
+  }
+
+  .customModal {
+    left: calc(40vw - 10rem);
+    position: absolute;
+    width: 30rem;
+    top: 12vh;
   }
 
 }

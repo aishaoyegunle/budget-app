@@ -1,12 +1,13 @@
 <template>
 <div class="budget-table" id="main">
     <div class="header">
+        <button id="openNav" class="toggle" @click="open()">&#9776;</button>
       <span class="heading">
           {{formatedDate}}
       </span>
 
       <span class="heading cost">
-       {{totalCost}}
+      <span>Remaining Budget</span><br> {{amountRemaining | currency}}
       </span>
 
     </div>
@@ -24,9 +25,9 @@
     
             <tr v-for="(item, index) in currentMonth.items" :key="index">
                 <td ><input type="text" name="category" v-model="item.category" class="input1" placeholder="Create a category"></td>
-                <td ><currency-input type="text" name="budgeted" v-model="item.budgeted" class="input1" placeholder="add budget to category"></currency-input></td>
-                <td ><currency-input type="text" name="activity" v-model="item.activity" class="input1" placeholder="Enter amount spent"></currency-input></td>
-                <td ><currency-input type="text" name="available" v-model="item.available" class="input1" placeholder="Available balance"></currency-input></td>
+                <td ><input type="number" name="budgeted" v-model="item.budgeted" class="input1" placeholder="add budget to category"></td>
+                <td ><input type="number" name="activity" v-model="item.activity" class="input1" placeholder="Enter amount spent" ></td>
+                <td class="available">{{(item.budgeted - item.activity) | currency}}</td>
             </tr>
         </table>
         <button  class="btn-save" @click="saveItems">Save</button>
@@ -36,25 +37,13 @@
 
 <script>
 import * as moment from 'moment'
-import CurrencyInput from './BudgetTable.vue'
+// require('../custom.css')
+
 
 export default {
     name:'BudgetTable',
     components:{
-        CurrencyInput
     },
-    props: ['budgets','value'],
-    template: `
-        <div>
-            <input 
-            type="text" 
-            :value="format(value)"
-            v-model="displayValue" 
-            @blur="isInputActive = false"
-            @focus="isInputActive = true"
-            ref="input"/>
-        </div>`,
-
     data (){
         return{
             category: '',
@@ -64,16 +53,14 @@ export default {
             months: [],
             currentMonth: '',
             id: '',
-            amountRemaining: 0,
             formatedDate: '',
-            isInputActive: false
-
+            budget: '',
         }
     },
 
     filters: {
         currency(value) {
-            return "$ " + parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+            return "$ " + parseFloat(value).toFixed(0).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
         }
     },
 
@@ -95,52 +82,28 @@ export default {
     },
 
     computed: {
-        // amountRemaining() {
-        //     const cost = 
-        // },
-
         totalCost() {
-            // let cost =0
-            // if (this.currentMonth.items.length < 1) {
-            //     return cost;
-            // } else {
-            //     cost = this.currentMonth.items.reduce((a, b) => a.budgeted + b.budgeted);
-            //     return cost;
-            // }
-            return 0;
+            var total = this.currentMonth.items.reduce( (acc, item) => acc + (item.budgeted - item.activity), 0)
+            return total
         },
 
-        displayValue: {
-            get: function() {
-                if (this.isInputActive) {
-                    // Cursor is inside the input field. unformat display value for user
-                    return this.value.toString()
-                } else {
-                    // User is not modifying now. Format display value for user interface
-                    return "$ " + this.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,")
-                }
-            },
-            // set: function(modifiedValue) {
-            //     // Recalculate value after ignoring "$" and "," in user input
-            //     let newValue = parseFloat(modifiedValue.replace(/[^\d\.]/g, ""))
-            //     // Ensure that it is not NaN
-            //     if (isNaN(newValue)) {
-            //         newValue = 0
-            //     }
-            //     // Note: we cannot set this.value as it is a "prop". It needs to be passed to parent component
-            //     // $emit the event so that parent component gets it
-            //     this.$emit('input', newValue)
-            // }
+        amountRemaining(){
+            return this.currentMonth.budget - this.totalCost
         }
+
     },
 
     methods: {
+        open() {
+      document.getElementById("mySidebar").style.display = "block";
+      document.getElementById("openNav").style.display = 'none';
+      },
         addCategory(){
             this.currentMonth.items.push({
                 category: '',
                 budgeted: '',
                 activity: '',
-                available: ''
+                available: '',
             });
         },
 
@@ -169,20 +132,23 @@ export default {
 }
 </script>
 
+<style src="../custom.css"></style>
+
 <style scoped>
 
 
 .budget-table{
     margin-left: 25rem;
-    /* padding: 0rem 10rem;
-    position: relative; */  
 }
 .butable{
     margin: 5rem;
 }
 .header{
     padding: 2rem;
-    /* margin-bottom: 5rem; */
+}
+
+.toggle{
+  display: none;
 }
 
 .heading{
@@ -191,7 +157,8 @@ export default {
   color: #130d25;
 }
 
-.cost{
+.heading.cost{
+    font-size: 3rem;
     float: right;
 }
 
@@ -203,9 +170,9 @@ export default {
   color: #070;
   cursor: pointer;
   position: absolute;
-  top: .1rem;
-  right: 6rem;
-  font-size: 2.4rem;
+  top: 8.4rem;
+  right: 10rem;
+  font-size: 4rem;
 }
 
 .table-add:hover {
@@ -246,17 +213,60 @@ tr:hover {
 .btn-save{
     margin-top: 5rem;
     margin-bottom: 2rem;    
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.3rem;
+    -webkit-transition-duration: 0.4s; 
+    transition-duration: 0.4s;
     cursor: pointer;
+    border-radius: .5rem;
 }
 
-@media screen and (max-width: 500px) {
-  .budget-table {
-    margin-left: 0rem;
-  }
+.input1{
+  font-size: 1.5rem;
+  width: 80%;
+  padding: .5rem .4rem;
+  border-radius: .3rem;
+}
 
-  .header{
-    text-align: center;
-  }
+@media only screen and (max-width: 600px) {
+    .budget-table {
+        margin-left: 0rem;
+    }
+
+    .toggle{
+        display: inline-block;
+        font-size: 2.2rem;
+        cursor: pointer;
+        border-radius: 1rem;
+        padding: .2rem 1.5rem;
+        background-color: #130d25;
+        border: none;
+        color: #fff;
+        float: left;
+        margin: 1rem 4rem 1rem -2rem;
+        }
+
+    .heading{
+        font-size: 4rem;
+    }
+    .heading.cost{
+        padding: 1.5rem 0rem;
+        font-size: 2rem;
+        padding-left: 8rem;
+        float: left;
+    }
+    .table-add {
+        color: #070;
+        cursor: pointer;
+        padding-top: 2rem;
+        float: left;
+        font-size: 3rem;
+    }
 
 }
 

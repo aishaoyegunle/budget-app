@@ -1,13 +1,10 @@
 <template>
     <div class="card">
       <router-link :to="{name: 'BudgetTable', params: {id: index}}"  class="content" >
-        <!-- "'/BudgetTable/' + index" -->
-        <h2>{{formatedDate}}</h2> 
-        <h4>Remaining Budget</h4>
-        <p>{{month.budgeted | currency}}</p> 
+        <h2>{{formatedDate}}</h2>
+        <p class="">Budget - {{month.budget | currency}}</p>
       </router-link>
     </div>
- 
 </template>
 
 
@@ -18,7 +15,6 @@ import * as moment from 'moment'
   name:'MonthBudget',
   props: ['month', 'index'],
   components: {
-    
   },
   data (){
    return{
@@ -30,7 +26,7 @@ import * as moment from 'moment'
 
   filters: {
       currency(value) {
-          return "$ " + parseFloat(value).toFixed(2).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+          return "$ " + parseFloat(value).toFixed(0).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
       }
   },
 
@@ -43,6 +39,7 @@ import * as moment from 'moment'
       this.currentMonth = this.month;
       this.formatedDate = moment(this.currentMonth.month).format("MMMM, YYYY");
     },
+
   }
 
  }
@@ -69,7 +66,7 @@ import * as moment from 'moment'
 }
 
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 .4rem .8rem 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     width: 30rem;
     border-radius: .5rem;
@@ -77,36 +74,31 @@ import * as moment from 'moment'
     display: inline-block;
     font-size: 1.5rem;
     padding: 2rem;
-    /* background-color: #fff; */
     background-color: rgba(220, 220, 220, 0.26);
     line-height: 3rem
 }
 
 .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 .8rem 1.6rem 0 rgba(0,0,0,0.2);
     cursor: pointer;
 }
 
 .card p{
   color: red;
+  margin-top: 2.5rem;
+  float: right;
+  font-size: 2rem;
 }
-/* .container {
-    padding: 2px 16px;
-} */
 
 .content {
   text-decoration: none;
   color: #130d25;
 }
 
-.content h2,h4{
+.content h2{
   float: left;
   
 }
 
-.content p{
-  float: right;
-  margin-top: 2rem;
-}
 </style>
 

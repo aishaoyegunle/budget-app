@@ -1,19 +1,14 @@
 <template>
-    <div>
-            <button id="openNav" class="toggle" @click="open()">&#9776;</button>
-        <div class="sidebar" id="mySidebar"> 
-            <nav>
-                <img src="" alt="logo" class="logo">
-                <button class="close" @click="close" >Close &times;</button>
-                <ul class="menu">
-                    <li><router-link class="menulist" to="/">Account</router-link></li><hr>
-                    <li><router-link class="menulist" to="/budget">Budget</router-link></li><hr>
-                </ul>
-            </nav>
+    <div class="sidebar" id="mySidebar"> 
+        <nav>
+            <img src="" alt="logo" class="logo">
+            <button class="close" @click="close" >&times;</button>
+            <ul class="menu">
+                <li><router-link class="menulist" to="/">Account</router-link></li><hr>
+                <li><router-link class="menulist" to="/budget">Budget</router-link></li><hr>
+            </ul>
+        </nav>
     </div>
-
-    </div>
-
 </template>
 
 
@@ -30,16 +25,9 @@ export default {
   },
 
   methods:{
-    open() {
-        document.getElementById("main").style.marginLeft = "25%";
-        document.getElementById("mySidebar").style.width = "25%";
-        document.getElementById("mySidebar").style.display = "block";
-        document.getElementById("openNav").style.display = 'none';
-        },
     close() {
-        document.getElementById("main").style.marginLeft = "0rem";
         document.getElementById("mySidebar").style.display = "none";
-        document.getElementById("openNav").style.display = "inline-block";
+        document.getElementById("openNav").style.display = "block";
         },
     }
 }
@@ -64,6 +52,7 @@ export default {
 }
 .close{
     display: none;
+    cursor: pointer;
 }
 .menu{
     list-style: none;
@@ -76,44 +65,31 @@ export default {
 .menulist{
     text-decoration: none;
     color: #fff;
-
 }
 
-.toggle{
-  display: none;
-}
-/* .menulist:hover{
-    
-} */
 
-/* .menulist:active{
-    color: yellow;
-} */
-
-/* menu:hover{
-    text-decoration: overline;
-} */
-
-@media screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
   .sidebar {
     display: none;
+    width: 20rem;
+    height: 100%;
   }
-  .close{
-    display: block;
+  .menu{
+    list-style: none;
+    margin-left: 3rem;
+    margin-top: 10rem;
+    font-size: 2rem;
 }
-.toggle{
-    display: inline;
-  }
+    .close{
+        display: block;
+        margin-left: 16rem;
+        margin-top: -10rem;
+        font-size: 3rem;
+        color: #fff;
+        background-color: #130d25;
+        border: none;
+        }
+
 }
 
-/* @media only screen and (min-width: 600px) {    .sidebar {
-        display: block;
-    }
-     .close{
-    display: none;
-}
-.toggle{
-    display: none;
-  }
-} */
 </style>
