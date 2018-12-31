@@ -14,34 +14,37 @@
                 <button  class="btn-delete" @click="selAcc(index)">Delete </button>
             </td>
         </tr>
-        <div class="customModalDelete" v-if="showModalDelete">
-                <a href="#" title="Close" class="modal-close" @click.prevent="showModalDelete = !showModalDelete">&times;</a>
-                <p>Are you sure you want to delete account {{selectedAccount.name}}</p>
-                <button class="btn-ok" @click="removeAccount($event)">OK</button>
+        <div class="overlay" v-if="showModalDelete">
+            <div class="customModalDelete" >
+                    <a href="#" title="Close" class="modal-close" @click.prevent="showModalDelete = !showModalDelete">&times;</a>
+                    <p>Are you sure you want to delete account {{selectedAccount.name}}</p>
+                    <button class="btn-ok" @click="removeAccount($event)">OK</button>
+            </div>
         </div>
 
-        <div class="customModal" v-if="showModalUpdate">
-        <div class="customModalTitle">
-        <a href="#" title="Close" class="modal-close" @click.prevent="showModalUpdate = !showModalUpdate">&times;</a>
-        <h1 class="heading2">Update Account</h1>
-        </div>
+        <div class="overlay" v-if="showModalUpdate">
+            <div class="customModal" >
+                <div class="customModalTitle">
+                <a href="#" title="Close" class="modal-close" @click.prevent="showModalUpdate = !showModalUpdate">&times;</a>
+                <h1 class="heading2">Update Account</h1>
+                </div>
 
-        <div class="customModalBody">
-            <input type="text" name="name" v-model="selectedAccount.name" class="input1" ><br>
-            <select name="category" class="select input1" >
-                <option value="CREDIT_CARD">Credit Card</option>
-                <option value="CHECKING">Checking</option>
-                <option value="SAVINGS">Savings</option>
-            </select>
-            <br>
-            <input type="number" v-model="selectedAccount.balance" name="balance" class="input1"><br>
+                <div class="customModalBody">
+                    <input type="text" name="name" v-model="selectedAccount.name" class="input1" ><br>
+                    <select name="category" class="select input1" >
+                        <option value="CREDIT_CARD">Credit Card</option>
+                        <option value="CHECKING">Checking</option>
+                        <option value="SAVINGS">Savings</option>
+                    </select>
+                    <br>
+                    <input type="number" v-model="selectedAccount.balance" name="balance" class="input1"><br>
 
-            <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
-        </div>   
-        <div class="customModalFooter">
-            <button class="btn-submit" @click="updateAccount($event)">Update</button>
-        </div>
-        
+                    <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
+                </div>   
+                <div class="customModalFooter">
+                    <button class="btn-submit" @click="updateAccount($event)">Update</button>
+                </div>
+            </div>
         </div>
     </table>
     
@@ -102,7 +105,6 @@ export default {
 
 <style scoped>
 .actable{
-    /* margin-left: 25rem; */
     margin: 5rem;
 }
 table {
@@ -205,7 +207,7 @@ tr:hover {
     z-index: 999;
     width: 40rem;
     padding: 3rem 1rem 1rem 1rem;
-    top: 15vh;
+    top: 35vh;
     border-radius: .5rem;
     overflow: hidden;
     background-color: #fff;
@@ -251,7 +253,7 @@ tr:hover {
   position: absolute;
   z-index: 999;
   width: 60rem;
-  top: 20vh;
+  top: 12vh;
   border-radius: .5rem;
   overflow: hidden;
   }
@@ -291,6 +293,17 @@ tr:hover {
 
 .modal-close:hover {
   color: #000;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  opacity: 1;
 }
 
 @media only screen and (max-width: 600px) {

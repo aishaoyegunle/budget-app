@@ -2,7 +2,7 @@
     <div class="card">
       <router-link :to="{name: 'BudgetTable', params: {id: index}}"  class="content" >
         <h2>{{formatedDate}}</h2>
-        <p class="">Budget - {{month.budget | currency}}</p>
+        <p class="">Budget:  {{month.budget | currency}}</p>
       </router-link>
     </div>
 </template>

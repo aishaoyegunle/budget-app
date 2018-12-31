@@ -1,36 +1,37 @@
 <template>
   <div class="account" id="main">
     <div class="header">
-      <button id="openNav" class="toggle" @click="open()">&#9776;</button>
+      <span class="toggle" @click="open()"><i class="fa fa-bars"></i></span>
       <span class="heading">
         {{title}}
       </span>
       <button class="btn" @click.prevent="showModalAdd = !showModalAdd">Add Account +</button>
     </div>
     
-    <div class="customModal" v-if="showModalAdd">
-      <div class="customModalTitle">
-      <a href="#" title="Close" class="modal-close" @click.prevent="showModalAdd = !showModalAdd">&times;</a>
-      <h1 class="heading2">Add Account</h1>
-      </div>
+    <div class="overlay" v-if="showModalAdd">
+      <div class="customModal" >
+        <div class="customModalTitle">
+        <a href="#" title="Close" class="modal-close" @click.prevent="showModalAdd = !showModalAdd">&times;</a>
+        <h1 class="heading2">Add Account</h1>
+        </div>
 
-      <div class="customModalBody">
-          <input type="text" name="name" v-model="name" class="input1" placeholder="Enter account name"><br>
-          <select name="category" class="select input1" >
-              <option value="CREDIT_CARD">Credit Card</option>
-              <option value="CHECKING">Checking</option>
-              <option value="SAVINGS">Savings</option>
-          </select>
-          <br>
-          <input type="number" v-model="balance" number data-type="currency" name="balance" class="input1" placeholder="Enter account balance" ><br>
-          <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
-      </div>   
-      <div class="customModalFooter">
-          <button class="btn-submit" @click="addAccount">Submit</button>
+        <div class="customModalBody">
+            <input type="text" name="name" v-model="name" class="input1" placeholder="Enter account name"><br>
+            <select name="category" class="select input1" >
+                <option value="CREDIT_CARD">Credit Card</option>
+                <option value="CHECKING">Checking</option>
+                <option value="SAVINGS">Savings</option>
+            </select>
+            <br>
+            <input type="number" v-model="balance" number data-type="currency" name="balance" class="input1" placeholder="Enter account balance" ><br>
+            <p class="help input1">Use negative values for accounts that carry a negative balance, e.g. credit cards</p><br><br>
+        </div>   
+        <div class="customModalFooter">
+            <button class="btn-submit" @click="addAccount">Submit</button>
+        </div>
+        
       </div>
-      
     </div>
-
     <account-table :accounts="accounts" @account-deleted="deleteAccount" @account-update="updateAccount"></account-table>
   </div>
 </template>
@@ -73,7 +74,7 @@ import AccountTable from '@/components/AccountTable.vue'
   methods: {
     open() {
       document.getElementById("mySidebar").style.display = "block";
-      document.getElementById("openNav").style.display = 'none';
+      document.getElementById("myOverlay").style.display = "block";
       },
     addAccount() {
       const data = {
@@ -92,12 +93,11 @@ import AccountTable from '@/components/AccountTable.vue'
       this.synchronizeStorage();
     },
     updateAccount(){
-      const data = {
-        name: this.name,
-        category: this.category,
-        balance: this.balance
-      };
-      this.accounts.push(data);
+      // const data = {
+      //   name: this.name,
+      //   category: this.category,
+      //   balance: this.balance
+      // };
       this.synchronizeStorage();
     },
     synchronizeStorage() {
@@ -138,7 +138,6 @@ import AccountTable from '@/components/AccountTable.vue'
 .btn{
     text-decoration: none;
     padding: 1rem 2rem;
-    /* display: inline-block; */
     border-radius: 10rem;
     font-size: 1.6rem;
     float: right;
@@ -192,7 +191,7 @@ import AccountTable from '@/components/AccountTable.vue'
   width: 60rem;
   top: 12vh;
   border-radius: .5rem;
-  overflow: hidden;
+  /* overflow: hidden; */
   }
 
 .customModal .customModalTitle {
@@ -232,6 +231,18 @@ import AccountTable from '@/components/AccountTable.vue'
   color: #000;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  opacity: 1;
+}
+
+
 @media only screen and (max-width: 600px) {
   .account {
     margin-left: 0rem;
@@ -266,6 +277,7 @@ import AccountTable from '@/components/AccountTable.vue'
     position: absolute;
     width: 30rem;
     top: 12vh;
+    height: 30rem;
   }
 
 }

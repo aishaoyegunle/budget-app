@@ -1,24 +1,26 @@
 <template>
   <div class="budget" id="main">
     <div class="header">
-      <button id="openNav" class="toggle" @click="open()">&#9776;</button>
+      <span class="toggle" @click="open()"><i class="fa fa-bars"></i></span>
       <span class="heading">
         {{title}}
       </span>
       <button @click.prevent="showModalAdd = !showModalAdd" class="btn">Add Budget +</button>
     </div>
 
-    <div class="customModal" v-if="showModalAdd">
-      <div class="customModalTitle">
-        <a href="#" title="Close" class="modal-close" @click.prevent="showModalAdd = !showModalAdd">&times;</a>
-        <h1 class="heading2">Monthly Budget</h1>
-      </div>
-      <div class="customModalBody">
-        <input type="month" name="month" v-model="month" class="input1" data-placeholder="" required aria-required="true" ><i class="fas fa-calendar-alt"></i><br>
-        <input type="number" v-model="budget" name="budget" class="input1" placeholder="Enter budget for the month"><i class="fas fa-dollar-sign"></i>
-        <br><br>
-        <button class="btn-submit" @click="addMonth">Enter</button>
-        
+    <div class="overlay" v-if="showModalAdd">
+      <div class="customModal">
+        <div class="customModalTitle">
+          <a href="#" title="Close" class="modal-close" @click.prevent="showModalAdd = !showModalAdd">&times;</a>
+          <h1 class="heading2">Monthly Budget</h1>
+        </div>
+        <div class="customModalBody">
+          <input type="month" name="month" v-model="month" class="input1" data-placeholder="" required aria-required="true" ><i class="fas fa-calendar-alt"></i><br>
+          <input type="number" v-model="budget" name="budget" class="input1" placeholder="Enter budget for the month"><i class="fas fa-dollar-sign"></i>
+          <br><br>
+          <button class="btn-submit" @click="addMonth">Enter</button>
+          
+        </div>
       </div>
     </div>
 
@@ -62,7 +64,7 @@ import MonthBudget from '@/components/MonthBudget.vue'
   methods: {
     open() {
       document.getElementById("mySidebar").style.display = "block";
-      document.getElementById("openNav").style.display = 'none';
+      document.getElementById("myOverlay").style.display = "block";
       },
     addMonth() {
       const data = {
@@ -201,6 +203,17 @@ input[type="month"]:valid::before { display: none }
 
 .modal-close:hover {
   color: #000;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  opacity: 1;
 }
 
 @media only screen and (max-width: 600px) {
